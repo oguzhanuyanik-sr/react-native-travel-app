@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ListingType } from '@/types/listingType';
 import Colors from '@/constants/Colors';
 import { FontAwesome5, Ionicons } from '@expo/vector-icons';
@@ -14,9 +14,22 @@ import { Link } from 'expo-router';
 
 type Props = {
   listingData: any[];
+  category: string;
 };
 
-export default function Listings({ listingData }: Props) {
+export default function Listings({ listingData, category }: Props) {
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    console.log('Update listing');
+
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 200);
+  }, [category]);
+
   const renderItems: ListRenderItem<ListingType> = ({ item }) => {
     return (
       <Link href={`/listing/${item.id}`} asChild>
@@ -58,7 +71,7 @@ export default function Listings({ listingData }: Props) {
   return (
     <View>
       <FlatList
-        data={listingData}
+        data={loading ? [] : listingData}
         renderItem={renderItems}
         horizontal
         showsHorizontalScrollIndicator={false}
