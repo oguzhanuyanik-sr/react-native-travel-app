@@ -10,6 +10,7 @@ import React from 'react';
 import { ListingType } from '@/types/listingType';
 import Colors from '@/constants/Colors';
 import { FontAwesome5, Ionicons } from '@expo/vector-icons';
+import { Link } from 'expo-router';
 
 type Props = {
   listingData: any[];
@@ -18,30 +19,40 @@ type Props = {
 export default function Listings({ listingData }: Props) {
   const renderItems: ListRenderItem<ListingType> = ({ item }) => {
     return (
-      <TouchableOpacity>
-        <View style={styles.item}>
-          <Image style={styles.image} source={{ uri: item.image }} />
+      <Link href={`/listing/${item.id}`} asChild>
+        <TouchableOpacity>
+          <View style={styles.item}>
+            <Image style={styles.image} source={{ uri: item.image }} />
 
-          <View style={styles.bookmark}>
-            <Ionicons name='bookmark-outline' size={20} color={Colors.white} />
-          </View>
-
-          <Text style={styles.itemTxt} numberOfLines={1} ellipsizeMode='tail'>
-            {item.name}
-          </Text>
-
-          <View>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <FontAwesome5
-                name='map-marker-alt'
-                size={18}
-                color={Colors.primaryColor}
+            <View style={styles.bookmark}>
+              <Ionicons
+                name='bookmark-outline'
+                size={20}
+                color={Colors.white}
               />
-              <Text style={styles.itemLocationTxt}>{item.location}</Text>
+            </View>
+
+            <Text style={styles.itemTxt} numberOfLines={1} ellipsizeMode='tail'>
+              {item.name}
+            </Text>
+
+            <View
+              style={{ flexDirection: 'row', justifyContent: 'space-between' }}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <FontAwesome5
+                  name='map-marker-alt'
+                  size={18}
+                  color={Colors.primaryColor}
+                />
+                <Text style={styles.itemLocationTxt}>{item.location}</Text>
+              </View>
+
+              <Text style={styles.itemPriceTxt}>${item.price}</Text>
             </View>
           </View>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </Link>
     );
   };
   return (
@@ -88,5 +99,11 @@ const styles = StyleSheet.create({
   },
   itemLocationTxt: {
     fontSize: 12,
+    marginLeft: 5,
+  },
+  itemPriceTxt: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: Colors.primaryColor,
   },
 });
